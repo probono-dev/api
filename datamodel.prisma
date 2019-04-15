@@ -1,0 +1,83 @@
+type User {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  # Auth related fields
+  facebookUserId: String @unique
+  githubUserId: String @unique
+  googleUserId: String @unique
+  email: String @unique
+  password: String
+
+  name: String!
+  bio: String
+  imageUrl: String
+  location: String
+  company: String
+
+  ownedProjects: [Project!]! @relation(name: "OwnedProjects")
+  contributions: [Project!]! @relation(name: "Contributions")
+  tasks: [Task!]!
+
+  status: UserStatus! @default(value: NEW)
+  roles: UserRole
+}
+
+enum UserStatus {
+  NEW
+  VERIFIED
+  INACTIVE
+}
+
+type Project {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  published: Boolean! @default(value: false)
+
+  name: String!
+  description: String!
+  imageUrl: String!
+  owner: User! @relation(name: "OwnedProjects")
+  contributors: [User!]! @relation(name: "Contributions")
+  tasks: [Task!]!
+  category: Category!
+  tags: [Tag!]!
+}
+
+type Task {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  name: String!
+  description: String
+  project: Project!
+  subTasks: [Task!]!
+  status: TaskStatus! @default(value: TO_DO)
+  assignee: User
+}
+
+enum TaskStatus {
+  TO_DO
+  IN_PROGRESS
+  DONE
+}
+
+type Category {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  name: String!
+  projects: [Project!]!
+}
+
+type Tag {
+  id: ID! @unique
+  name: String!
+
+  projects: [Project!]!
+}
