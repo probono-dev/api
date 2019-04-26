@@ -15,8 +15,6 @@ export const User = prismaObjectType({
       'ownedProjects',
       'contributions',
       'tasks',
-      'status',
-      'roles',
     ]);
   },
 });

@@ -2,6 +2,7 @@ type User {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
+  admin: Boolean! @default(value: false)
 
   # Auth related fields
   facebookUserId: String @unique
@@ -21,7 +22,6 @@ type User {
   tasks: [Task!]!
 
   status: UserStatus! @default(value: NEW)
-  roles: UserRole
 }
 
 enum UserStatus {
@@ -36,10 +36,11 @@ type Project {
   updatedAt: DateTime!
 
   published: Boolean! @default(value: false)
+  slug: String!
 
   name: String!
   description: String!
-  imageUrl: String!
+  imageUrl: String
   owner: User! @relation(name: "OwnedProjects")
   contributors: [User!]! @relation(name: "Contributions")
   tasks: [Task!]!
@@ -53,6 +54,7 @@ type Task {
   updatedAt: DateTime!
 
   name: String!
+  slug: String!
   description: String
   project: Project!
   subTasks: [Task!]!
@@ -64,20 +66,23 @@ enum TaskStatus {
   TO_DO
   IN_PROGRESS
   DONE
+  CLOSED
 }
 
 type Category {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
+  approved: Boolean! @default(value: false)
 
   name: String!
+  slug: String!
   projects: [Project!]!
 }
 
 type Tag {
   id: ID! @unique
   name: String!
-
+  slug: String!
   projects: [Project!]!
 }

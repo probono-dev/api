@@ -1,17 +1,30 @@
 import { prisma } from './generated/prisma-client';
+import createSlug from 'slug';
 
 async function main() {
-  await prisma.createCategory({ name: 'Anti-bullying' });
-  await prisma.createCategory({ name: 'Arts' });
-  await prisma.createCategory({ name: 'Development' });
-  await prisma.createCategory({ name: 'Environment' });
-  await prisma.createCategory({ name: 'Education' });
-  await prisma.createCategory({ name: 'Health' });
-  await prisma.createCategory({ name: 'Homelessness' });
-  await prisma.createCategory({ name: 'Information Technology' });
-  await prisma.createCategory({ name: 'LGBT' });
-  await prisma.createCategory({ name: 'Social' });
-  await prisma.createCategory({ name: 'Sports' });
+  // Add all the categories that don't yet exist
+  const addedCategories = await prisma.categories();
+  const names = addedCategories.map(({ name }) => name);
+  const allCategories = [
+    'Anti-bullying',
+    'Arts',
+    'Development',
+    'Environment',
+    'Education',
+    'Health',
+    'Homelessness',
+    'Information Technology',
+    'LGBT',
+    'Social',
+    'Sports',
+  ];
+  const toBeAdded = allCategories.filter(name => !names.includes(name));
+  Promise.all(
+    toBeAdded.map(name => {
+      console.log(`Adding category: ${name}`);
+      prisma.createCategory({ name, slug: createSlug(name, { lower: true }) });
+    }),
+  );
 }
 
-main();
+main().then(() => console.log('Seed complete'));

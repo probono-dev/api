@@ -1,10 +1,15 @@
 import { mutationType } from 'nexus';
 import signup from './mutations/signup';
 import login from './mutations/login';
+import { registerDefinitions } from '../utils';
+import { prismaObjectType } from 'nexus-prisma';
+import { projectPrismaMutations, createProject } from './Project';
 
-export const Mutation = mutationType({
+export const Mutation = prismaObjectType({
+  name: 'Mutation',
   definition(t) {
-    signup(t);
-    login(t);
+    registerDefinitions(t, login, signup, createProject);
+
+    t.prismaFields([...projectPrismaMutations]);
   },
 });
