@@ -7,7 +7,7 @@ export const isAuthenticated = rule()((parent, args, context: Context) => {
   return Boolean(userId);
 });
 
-export const isAdmin = rule()(async (parent, args, context: Context) =>{
+export const isAdmin = rule()(async (parent, args, context: Context) => {
   const user = await getUser(context);
-  
-})
+  return user.admin;
+});
