@@ -1,5 +1,7 @@
 # ProBono API
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/probono-dev/api.svg)](https://greenkeeper.io/)
+
 ## About
 
 This project uses `prisma` for managing database queries and `nexus` with `graphql-yoga` for exposing an API.
