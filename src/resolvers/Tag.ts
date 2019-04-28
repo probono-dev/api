@@ -1,9 +1,9 @@
 import { prismaObjectType } from 'nexus-prisma';
-import { isAuthenticated } from '../rules/user';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
-import { requiredStringArg } from '../utils';
+import { isAuthenticated } from '../rules/user';
 import { Context } from '../types';
-import { regexp, combine, maxLength } from '../validate';
+import { requiredStringArg } from '../utils';
+import { combine, maxLength, regexp } from '../validate';
 
 const validateName = combine(regexp(/^[a-z0-9]+$/), maxLength(16));
 
@@ -25,7 +25,7 @@ export const createTag = (t: ObjectDefinitionBlock<'Mutation'>) => {
     },
     resolve: async (_, { name }, ctx: Context) => {
       validateName(name);
-      return await ctx.prisma.createTag({
+      return ctx.prisma.createTag({
         name,
       });
     },

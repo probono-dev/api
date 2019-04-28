@@ -1,14 +1,14 @@
 import { mutationType } from 'nexus';
-import signup from './mutations/signup';
-import login from './mutations/login';
-import { registerDefinitions } from '../utils';
 import { prismaObjectType } from 'nexus-prisma';
-import { projectPrismaMutations, createProject } from './Project';
+import { registerDefinitions } from '../utils';
 import {
   approveCategory,
   categoryPrismaMutations,
   createCategory,
 } from './Category';
+import login from './mutations/login';
+import signup from './mutations/signup';
+import { createProject, projectPrismaMutations } from './Project';
 import { createTag } from './Tag';
 
 export const Mutation = prismaObjectType({

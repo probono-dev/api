@@ -4,7 +4,7 @@
   "description": "GraphQL API for ProBono.",
   "main": "index.js",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "ts-node-dev --no-notify --respawn --transpileOnly ./src",
     "start": "ts-node src/index.ts",
@@ -13,7 +13,8 @@
     "deploy": "prisma deploy",
     "generate": "prisma generate",
     "test": "echo \"No tests specified yet.\"",
-    "production": "prisma deploy --env-file .env.prod"
+    "production": "prisma deploy --env-file .env.prod",
+    "lint": "tslint -c tslint.json \"src/**/*.ts\" -e \"src/generated/**/*.ts\" -t verbose"
   },
   "dependencies": {
     "bcrypt": "3.0.6",
@@ -36,7 +37,8 @@
     "@types/ws": "6.0.1",
     "prisma": "1.30.2",
     "ts-node-dev": "1.0.0-pre.32",
-    "tslint-config-prettier": "^1.18.0",
+    "tslint": "5.16.0",
+    "tslint-config-prettier": "1.18.0",
     "typescript": "3.4.5"
   }
 }

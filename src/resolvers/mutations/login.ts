@@ -1,7 +1,7 @@
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
-import { APP_SECRET, requiredStringArg } from '../../utils';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
+import { APP_SECRET, requiredStringArg } from '../../utils';
 
 export default (t: ObjectDefinitionBlock<'Mutation'>) => {
   t.field('login', {

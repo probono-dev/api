@@ -1,11 +1,10 @@
-import { isAuthenticated } from '../rules/user';
-import { isProjectOwner } from '../rules/project';
 import { prismaObjectType } from 'nexus-prisma';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
-import { stringArg } from 'nexus/dist';
-import { getUserId } from '../utils';
-import { Context } from '../types';
 import * as slug from 'slug';
+import { isProjectOwner } from '../rules/project';
+import { isAuthenticated } from '../rules/user';
+import { Context } from '../types';
+import { getUserId, requiredStringArg } from '../utils';
 
 export const Project = prismaObjectType({
   name: 'Project',
@@ -29,15 +28,11 @@ export const createProject = (t: ObjectDefinitionBlock<'Mutation'>) => {
   t.field('createProject', {
     type: 'Project',
     args: {
-      name: stringArg(),
-      description: stringArg(),
-      categoryId: stringArg(),
+      name: requiredStringArg(),
+      description: requiredStringArg(),
+      categoryId: requiredStringArg(),
     },
-    resolve: async (
-      _,
-      { name, description, categoryId },
-      ctx: Context,
-    ) => {
+    resolve: async (_, { name, description, categoryId }, ctx: Context) => {
       const id = getUserId(ctx);
       const project = await ctx.prisma.createProject({
         name,

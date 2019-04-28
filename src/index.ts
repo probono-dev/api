@@ -1,10 +1,10 @@
 import { GraphQLServer } from 'graphql-yoga';
-import { prisma, Prisma } from './generated/prisma-client';
-import * as path from 'path';
 import { makePrismaSchema } from 'nexus-prisma';
+import * as path from 'path';
+import datamodelInfo from './generated/nexus-prisma';
+import { prisma } from './generated/prisma-client';
 import { permissions } from './permissions';
 import * as allTypes from './resolver';
-import datamodelInfo from './generated/nexus-prisma';
 
 const schema = makePrismaSchema({
   // Provide all the GraphQL types we've implemented
@@ -14,7 +14,6 @@ const schema = makePrismaSchema({
   prisma: {
     datamodelInfo,
     client: prisma,
-    
   },
 
   // Specify where Nexus should put the generated files
@@ -52,4 +51,5 @@ const server = new GraphQLServer({
   },
 });
 
+/* tslint:disable no-console */
 server.start(() => console.log(`🚀 Server ready at http://localhost:4000`));

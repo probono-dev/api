@@ -22,13 +22,7 @@ type User {
   organisation: Organisation @relation(name: "OrganisationMembers")
   tasks: [Task!]!
 
-  status: UserStatus! @default(value: NEW)
-}
-
-enum UserStatus {
-  NEW
-  VERIFIED
-  INACTIVE
+  verified: Boolean! @default(value: false)
 }
 
 type RichText {

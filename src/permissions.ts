@@ -1,6 +1,6 @@
 import { shield } from 'graphql-shield';
-import { isAuthenticated } from './rules/user';
 import { projectMutationPermissions } from './resolvers/Project';
+import { isAuthenticated } from './rules/user';
 
 export const permissions = shield({
   Query: {

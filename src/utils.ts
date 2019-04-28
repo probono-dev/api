@@ -1,12 +1,12 @@
 import { verify } from 'jsonwebtoken';
-import { Context } from './types';
 import {
+  idArg,
+  NexusArgDef,
   ObjectDefinitionBlock,
   ScalarArgConfig,
   stringArg,
-  NexusArgDef,
-  idArg,
 } from 'nexus/dist/core';
+import { Context } from './types';
 
 export const APP_SECRET = 'appsecret321';
 
@@ -40,7 +40,7 @@ export type Definition<T extends string> = (
 
 export function registerDefinitions<T extends string>(
   t: ObjectDefinitionBlock<T>,
-  ...defintions: Definition<T>[]
+  ...defintions: Array<Definition<T>>
 ) {
   defintions.forEach(definition => definition(t));
 }

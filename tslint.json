@@ -1,3 +1,10 @@
 {
-  "extends": ["tslint:latest", "tslint-config-prettier"]
+  "defaultSeverity": "error",
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "rules": {
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "interface-name": false,
+    "no-submodule-imports": [true, "nexus/dist/core"]
+  }
 }

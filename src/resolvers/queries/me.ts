@@ -5,7 +5,7 @@ export default (t: ObjectDefinitionBlock<'Query'>) => {
   t.field('me', {
     type: 'User',
     resolve: async (parent, args, ctx) => {
-      return await getUser(ctx);
+      return getUser(ctx);
     },
   });
 };

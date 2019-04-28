@@ -1,8 +1,8 @@
-import { registerDefinitions } from '../utils';
-import me from './queries/me';
 import { prismaObjectType } from 'nexus-prisma';
-import { projectPrismaQueries } from './Project';
+import { registerDefinitions } from '../utils';
 import { categoryPrismaQueries } from './Category';
+import { projectPrismaQueries } from './Project';
+import me from './queries/me';
 import { tagPrismaQueries } from './Tag';
 
 export const Query = prismaObjectType({
