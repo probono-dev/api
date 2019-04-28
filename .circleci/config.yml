@@ -28,6 +28,10 @@ jobs:
     steps:
       - checkout
 
+      # Paid feature - to be added when possible
+      # - setup_remote_docker: 
+      #    docker_layer_caching: true
+
       - run:
           name: Install Node Version Manager
           command: |
@@ -74,7 +78,7 @@ jobs:
           name: Wait for GraphQL Server
           shell: /bin/sh
           command: |
-            wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 10 http://localhost:4000
+            wget --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=15 -t 10 http://localhost:4000
 
       # run tests!
       - run: npm run test
