@@ -10,8 +10,8 @@
     "start": "ts-node src/index.ts",
     "seed": "ts-node src/seed.ts",
     "service": "docker-compose up -d",
-    "deploy": "prisma deploy --project prisma.local.yml",
-    "generate": "prisma generate --project prisma.local.yml",
+    "deploy": "prisma deploy",
+    "generate": "prisma generate",
     "test": "echo \"No tests specified yet.\"",
     "production": "prisma deploy --env-file .env.prod"
   },
