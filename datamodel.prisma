@@ -19,6 +19,7 @@ type User {
 
   ownedProjects: [Project!]! @relation(name: "OwnedProjects")
   contributions: [Project!]! @relation(name: "Contributions")
+  organisation: Organisation @relation(name: "OrganisationMembers")
   tasks: [Task!]!
 
   status: UserStatus! @default(value: NEW)
@@ -30,16 +31,37 @@ enum UserStatus {
   INACTIVE
 }
 
+type RichText {
+  text: String!
+  html: String!
+}
+
+type Organisation {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  name: String! @unique
+  slug: String! @unique
+  approved: Boolean! @default(value: false)
+
+  owner: User @relation(name: "OrganisationOwner")
+  description: RichText
+  website: String
+  category: Category
+  members: [User!] @relation(name: "OrganisationMembers")
+}
+
 type Project {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
 
   published: Boolean! @default(value: false)
-  slug: String!
+  slug: String! @unique
 
   name: String!
-  description: String!
+  description: RichText!
   imageUrl: String
   owner: User! @relation(name: "OwnedProjects")
   contributors: [User!]! @relation(name: "Contributions")
@@ -54,8 +76,8 @@ type Task {
   updatedAt: DateTime!
 
   name: String!
-  slug: String!
-  description: String
+  slug: String! @unique
+  description: RichText
   project: Project!
   subTasks: [Task!]!
   status: TaskStatus! @default(value: TO_DO)
@@ -76,13 +98,12 @@ type Category {
   approved: Boolean! @default(value: false)
 
   name: String!
-  slug: String!
+  slug: String! @unique
   projects: [Project!]!
 }
 
 type Tag {
   id: ID! @unique
-  name: String!
-  slug: String!
+  name: String! @unique
   projects: [Project!]!
 }

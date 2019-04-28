@@ -1,5 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga';
-import { prisma } from './generated/prisma-client';
+import { prisma, Prisma } from './generated/prisma-client';
 import * as path from 'path';
 import { makePrismaSchema } from 'nexus-prisma';
 import { permissions } from './permissions';
@@ -14,6 +14,7 @@ const schema = makePrismaSchema({
   prisma: {
     datamodelInfo,
     client: prisma,
+    
   },
 
   // Specify where Nexus should put the generated files

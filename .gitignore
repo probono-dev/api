@@ -72,3 +72,6 @@ yarn-error.log
 .linaria-cache
 
 generated
+
+prisma.yml
+.env.prod

@@ -1,8 +1,20 @@
 import { verify } from 'jsonwebtoken';
 import { Context } from './types';
-import { ObjectDefinitionBlock } from 'nexus/dist/core';
+import {
+  ObjectDefinitionBlock,
+  ScalarArgConfig,
+  stringArg,
+  NexusArgDef,
+  idArg,
+} from 'nexus/dist/core';
 
 export const APP_SECRET = 'appsecret321';
+
+export const throwIf = (condition: boolean, message: string) => {
+  if (condition) {
+    throw new Error(message);
+  }
+};
 
 interface Token {
   userId: string;
@@ -22,8 +34,29 @@ export function getUser(context: Context) {
   return context.prisma.user({ id });
 }
 
-export type Definition<T extends string> = (t: ObjectDefinitionBlock<T>) => void;
+export type Definition<T extends string> = (
+  t: ObjectDefinitionBlock<T>,
+) => void;
 
-export function registerDefinitions<T extends string>(t: ObjectDefinitionBlock<T>, ...defintions: Definition<T>[]) {
+export function registerDefinitions<T extends string>(
+  t: ObjectDefinitionBlock<T>,
+  ...defintions: Definition<T>[]
+) {
   defintions.forEach(definition => definition(t));
 }
+
+const requiredArg = <T>(
+  arg: (options?: ScalarArgConfig<T>) => NexusArgDef<any>,
+) => (options?: ScalarArgConfig<T>) =>
+  arg({ ...options, required: true });
+
+const optionalArg = <T>(
+  arg: (options?: ScalarArgConfig<T>) => NexusArgDef<any>,
+) => (options?: ScalarArgConfig<T>) =>
+  arg({ ...options, required: false });
+
+export const requiredStringArg = requiredArg(stringArg);
+
+export const optionalStringArg = optionalArg(stringArg);
+
+export const requiredIdArg = requiredArg(idArg);

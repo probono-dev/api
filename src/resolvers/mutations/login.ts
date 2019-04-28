@@ -1,15 +1,18 @@
-import { stringArg } from 'nexus/dist';
 import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
-import { APP_SECRET } from '../../utils';
+import { APP_SECRET, requiredStringArg } from '../../utils';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
 
 export default (t: ObjectDefinitionBlock<'Mutation'>) => {
   t.field('login', {
     type: 'AuthPayload',
     args: {
-      email: stringArg(),
-      password: stringArg(),
+      email: requiredStringArg({
+        description: 'E-mail address of a registered user.',
+      }),
+      password: requiredStringArg({
+        description: 'Password matching the e-mail address.',
+      }),
     },
     resolve: async (parent, { email, password }, context) => {
       const user = await context.prisma.user({ email });

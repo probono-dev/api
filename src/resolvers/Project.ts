@@ -5,7 +5,7 @@ import { ObjectDefinitionBlock } from 'nexus/dist/core';
 import { stringArg } from 'nexus/dist';
 import { getUserId } from '../utils';
 import { Context } from '../types';
-import createSlug from 'slug';
+import * as slug from 'slug';
 
 export const Project = prismaObjectType({
   name: 'Project',
@@ -13,6 +13,7 @@ export const Project = prismaObjectType({
     t.prismaFields([
       'id',
       'name',
+      'slug',
       'description',
       'imageUrl',
       'owner',
@@ -41,7 +42,7 @@ export const createProject = (t: ObjectDefinitionBlock<'Mutation'>) => {
       const project = await ctx.prisma.createProject({
         name,
         description,
-        slug: createSlug(name),
+        slug: slug(name),
         owner: { connect: { id } },
         category: { connect: { id: categoryId } },
         imageUrl: '',

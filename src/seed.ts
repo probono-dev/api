@@ -1,5 +1,5 @@
 import { prisma } from './generated/prisma-client';
-import createSlug from 'slug';
+import * as slug from 'slug';
 
 async function main() {
   // Add all the categories that don't yet exist
@@ -22,7 +22,7 @@ async function main() {
   Promise.all(
     toBeAdded.map(name => {
       console.log(`Adding category: ${name}`);
-      prisma.createCategory({ name, slug: createSlug(name, { lower: true }) });
+      prisma.createCategory({ name, slug: slug(name, { lower: true }), approved: true });
     }),
   );
 }
