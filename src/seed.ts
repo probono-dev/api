@@ -1,7 +1,7 @@
 import { hash } from 'bcrypt';
 import * as slug from 'slug';
 import { prisma } from './generated/prisma-client';
-import { isEnv } from './utils';
+import { isEnv, throwIf } from './utils';
 
 const { PROD_ADMIN_PASSWORD } = process.env;
 
@@ -70,9 +70,13 @@ async function main() {
   }
   // NOTE(danielkov): Creates the initial admin account on actual deployment
   if (production) {
+    throwIf(
+      !PROD_ADMIN_PASSWORD,
+      'The deployment environment is [production] but the env varibale PROD_ADMIN_PASSWORD is not set.',
+    );
     await createAccount(
       'Professor Bonovich',
-      PROD_ADMIN_PASSWORD,
+      PROD_ADMIN_PASSWORD!,
       'admin@probono.dev',
       true,
     );
