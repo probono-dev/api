@@ -2,6 +2,7 @@ type User {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
+  admin: Boolean! @default(value: false)
 
   # Auth related fields
   facebookUserId: String @unique
@@ -10,7 +11,7 @@ type User {
   email: String @unique
   password: String
 
-  name: String!
+  name: String
   bio: String
   imageUrl: String
   location: String
@@ -18,16 +19,31 @@ type User {
 
   ownedProjects: [Project!]! @relation(name: "OwnedProjects")
   contributions: [Project!]! @relation(name: "Contributions")
+  organisation: Organisation @relation(name: "OrganisationMembers")
   tasks: [Task!]!
 
-  status: UserStatus! @default(value: NEW)
-  roles: UserRole
+  verified: Boolean! @default(value: false)
 }
 
-enum UserStatus {
-  NEW
-  VERIFIED
-  INACTIVE
+type RichText {
+  text: String!
+  html: String!
+}
+
+type Organisation {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  name: String! @unique
+  slug: String! @unique
+  approved: Boolean! @default(value: false)
+
+  owner: User @relation(name: "OrganisationOwner")
+  description: RichText
+  website: String
+  category: Category
+  members: [User!] @relation(name: "OrganisationMembers")
 }
 
 type Project {
@@ -36,10 +52,11 @@ type Project {
   updatedAt: DateTime!
 
   published: Boolean! @default(value: false)
+  slug: String! @unique
 
   name: String!
-  description: String!
-  imageUrl: String!
+  description: RichText!
+  imageUrl: String
   owner: User! @relation(name: "OwnedProjects")
   contributors: [User!]! @relation(name: "Contributions")
   tasks: [Task!]!
@@ -53,7 +70,8 @@ type Task {
   updatedAt: DateTime!
 
   name: String!
-  description: String
+  slug: String! @unique
+  description: RichText
   project: Project!
   subTasks: [Task!]!
   status: TaskStatus! @default(value: TO_DO)
@@ -64,20 +82,22 @@ enum TaskStatus {
   TO_DO
   IN_PROGRESS
   DONE
+  CLOSED
 }
 
 type Category {
   id: ID! @unique
   createdAt: DateTime!
   updatedAt: DateTime!
+  approved: Boolean! @default(value: false)
 
   name: String!
+  slug: String! @unique
   projects: [Project!]!
 }
 
 type Tag {
   id: ID! @unique
-  name: String!
-
+  name: String! @unique
   projects: [Project!]!
 }

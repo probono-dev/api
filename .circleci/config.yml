@@ -1,0 +1,97 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+workflows:
+  version: 2
+  test-build-deploy:
+    jobs:
+      - test
+      # - build:
+      #     requires:
+      #       - test
+      #     filters:
+      #       branches:
+      #         only: master
+      # - deploy:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only: master
+jobs:
+  test:
+    machine: true
+    working_directory: ~/probono-api
+
+    steps:
+      - checkout
+
+      # Paid feature - to be added when possible
+      # - setup_remote_docker: 
+      #    docker_layer_caching: true
+
+      - run:
+          name: Install Node Version Manager
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install v8.12.0
+            nvm alias default v8.12.0
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo "[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"" >> $BASH_ENV
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Install Dependencies
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Lint Files
+          command: npm run lint
+
+      - run:
+          name: Start Prisma server
+          command: |
+            npm run service
+            sleep 20
+            npm run deploy
+
+      - run:
+          name: Start GraphQL Server
+          command: npm start
+          background: true
+
+      - run:
+          name: Wait for GraphQL Server
+          shell: /bin/sh
+          command: |
+            wget --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=15 -t 10 http://localhost:4000
+
+      # run tests!
+      - run: npm run test
+  # build:
+  #   docker:
+  #     - image: 
+  # deploy:
+  #   docker:
+  #     - image: buildpack-deps:trusty
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Deploy Master to Heroku
+  #         command: |
+  #           git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+
