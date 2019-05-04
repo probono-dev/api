@@ -1,4 +1,4 @@
-import { shield, IRule } from 'graphql-shield';
+import { shield } from 'graphql-shield';
 import { projectMutationPermissions } from './resolvers/Project';
 import {
   userMutationPermissions,

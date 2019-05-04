@@ -3,7 +3,7 @@ import * as slug from 'slug';
 import { prisma } from './generated/prisma-client';
 import { isEnv } from './utils';
 
-const { NODE_ENV, PROD_ADMIN_PASSWORD } = process.env;
+const { PROD_ADMIN_PASSWORD } = process.env;
 
 const dev = isEnv('development');
 const test = isEnv('test');
