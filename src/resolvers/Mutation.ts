@@ -1,29 +1,34 @@
-import { mutationType } from 'nexus';
 import { prismaObjectType } from 'nexus-prisma';
 import { registerDefinitions } from '../utils';
+import { categoryPrismaMutations, categoryMutations } from './Category';
+import { projectPrismaMutations, projectMutations } from './Project';
+import { tagPrismaMutations, tagMutations } from './Tag';
+import { taskPrismaMutations } from './Task';
+import { userMutations, userPrismaMutations } from './User';
 import {
-  approveCategory,
-  categoryPrismaMutations,
-  createCategory,
-} from './Category';
-import login from './mutations/login';
-import signup from './mutations/signup';
-import { createProject, projectPrismaMutations } from './Project';
-import { createTag } from './Tag';
+  organisationMutations,
+  organisationPrismaMutations,
+} from './Organisation';
 
 export const Mutation = prismaObjectType({
   name: 'Mutation',
   definition(t) {
     registerDefinitions(
       t,
-      login,
-      signup,
-      createProject,
-      createCategory,
-      approveCategory,
-      createTag,
+      userMutations,
+      projectMutations,
+      categoryMutations,
+      tagMutations,
+      organisationMutations,
     );
 
-    t.prismaFields([...projectPrismaMutations, ...categoryPrismaMutations]);
+    t.prismaFields([
+      ...projectPrismaMutations,
+      ...categoryPrismaMutations,
+      ...tagPrismaMutations,
+      ...taskPrismaMutations,
+      ...organisationPrismaMutations,
+      ...userPrismaMutations,
+    ]);
   },
 });

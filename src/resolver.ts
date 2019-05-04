@@ -7,3 +7,5 @@ export { Tag } from './resolvers/Tag';
 export { TaskStatus } from './resolvers/TaskStatus';
 export { Query } from './resolvers/Query';
 export { Project } from './resolvers/Project';
+export { RichText } from './resolvers/RichText';
+export { Organisation } from './resolvers/Organisation';

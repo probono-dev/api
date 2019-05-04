@@ -1,12 +1,18 @@
-import { shield } from 'graphql-shield';
+import { shield, IRule } from 'graphql-shield';
 import { projectMutationPermissions } from './resolvers/Project';
-import { isAuthenticated } from './rules/user';
+import {
+  userMutationPermissions,
+  userQueryPermissions,
+} from './resolvers/User';
+import { categoryMutationPermissions } from './resolvers/Category';
 
 export const permissions = shield({
   Query: {
-    me: isAuthenticated,
+    ...userQueryPermissions,
   },
   Mutation: {
-    ...projectMutationPermissions
+    ...projectMutationPermissions,
+    ...userMutationPermissions,
+    ...categoryMutationPermissions,
   },
 });

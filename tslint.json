@@ -5,6 +5,7 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "interface-name": false,
-    "no-submodule-imports": [true, "nexus/dist/core"]
+    "no-submodule-imports": [true, "nexus/dist/core", "nexus-prisma/dist/types"],
+    "no-unused-variable": true
   }
 }

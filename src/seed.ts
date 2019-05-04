@@ -1,12 +1,13 @@
 import { hash } from 'bcrypt';
 import * as slug from 'slug';
 import { prisma } from './generated/prisma-client';
+import { isEnv } from './utils';
 
 const { NODE_ENV, PROD_ADMIN_PASSWORD } = process.env;
 
-const dev = NODE_ENV === 'development';
-const test = NODE_ENV === 'test';
-const production = NODE_ENV === 'production';
+const dev = isEnv('development');
+const test = isEnv('test');
+const production = isEnv('production');
 
 const createAccount = async (
   name: string,

@@ -3,7 +3,7 @@ import { ObjectDefinitionBlock } from 'nexus/dist/core';
 import * as slug from 'slug';
 import { isAdmin, isAuthenticated } from '../rules/user';
 import { Context } from '../types';
-import { requiredIdArg, requiredStringArg } from '../utils';
+import { requiredIdArg, requiredStringArg, selectPrisma } from '../utils';
 
 export const Category = prismaObjectType({
   name: 'Category',
@@ -12,7 +12,7 @@ export const Category = prismaObjectType({
   },
 });
 
-export const createCategory = (t: ObjectDefinitionBlock<'Mutation'>) => {
+export const categoryMutations = (t: ObjectDefinitionBlock<'Mutation'>) => {
   t.field('createCategory', {
     type: 'Category',
     args: {
@@ -26,13 +26,13 @@ export const createCategory = (t: ObjectDefinitionBlock<'Mutation'>) => {
       });
     },
   });
-};
 
-export const approveCategory = (t: ObjectDefinitionBlock<'Mutation'>) => {
   t.field('approveCategory', {
     type: 'Category',
     args: {
-      id: requiredIdArg({ description: 'Id of the category to be approved.' }),
+      id: requiredIdArg({
+        description: 'Id of the category to be approved.',
+      }),
     },
     resolve: async (_, { id }, ctx: Context) => {
       return ctx.prisma.updateCategory({
@@ -43,9 +43,15 @@ export const approveCategory = (t: ObjectDefinitionBlock<'Mutation'>) => {
   });
 };
 
-export const categoryPrismaQueries = ['category', 'categories'];
+export const categoryPrismaQueries = selectPrisma<'Query'>([
+  'category',
+  'categories',
+  'categoriesConnection',
+]);
 
-export const categoryPrismaMutations = ['deleteCategory'];
+export const categoryPrismaMutations = selectPrisma<'Mutation'>([
+  'deleteCategory',
+]);
 
 export const categoryMutationPermissions = {
   createCategory: isAuthenticated,

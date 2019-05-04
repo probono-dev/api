@@ -7,8 +7,11 @@ import {
   stringArg,
 } from 'nexus/dist/core';
 import { Context } from './types';
+import { AddFieldInput } from 'nexus-prisma/dist/types';
 
 export const APP_SECRET = 'appsecret321';
+
+export const isEnv = (name: string) => process.env.NODE_ENV === name;
 
 export const throwIf = (condition: boolean, message: string) => {
   if (condition) {
@@ -38,6 +41,12 @@ export type Definition<T extends string> = (
   t: ObjectDefinitionBlock<T>,
 ) => void;
 
+export function selectPrisma<T extends string>(
+  queries: AddFieldInput<'objectTypes', T>,
+) {
+  return queries;
+}
+
 export function registerDefinitions<T extends string>(
   t: ObjectDefinitionBlock<T>,
   ...defintions: Array<Definition<T>>
@@ -47,16 +56,16 @@ export function registerDefinitions<T extends string>(
 
 const requiredArg = <T>(
   arg: (options?: ScalarArgConfig<T>) => NexusArgDef<any>,
-) => (options?: ScalarArgConfig<T>) =>
-  arg({ ...options, required: true });
+) => (options?: ScalarArgConfig<T>) => arg({ ...options, required: true });
 
 const optionalArg = <T>(
   arg: (options?: ScalarArgConfig<T>) => NexusArgDef<any>,
-) => (options?: ScalarArgConfig<T>) =>
-  arg({ ...options, required: false });
+) => (options?: ScalarArgConfig<T>) => arg({ ...options, required: false });
 
 export const requiredStringArg = requiredArg(stringArg);
 
 export const optionalStringArg = optionalArg(stringArg);
 
 export const requiredIdArg = requiredArg(idArg);
+
+export const optionalIdArg = optionalArg(idArg);

@@ -2,7 +2,7 @@ import { prismaObjectType } from 'nexus-prisma';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
 import { isAuthenticated } from '../rules/user';
 import { Context } from '../types';
-import { requiredStringArg } from '../utils';
+import { requiredStringArg, selectPrisma } from '../utils';
 import { combine, maxLength, regexp } from '../validate';
 
 const validateName = combine(regexp(/^[a-z0-9]+$/), maxLength(16));
@@ -14,7 +14,7 @@ export const Tag = prismaObjectType({
   },
 });
 
-export const createTag = (t: ObjectDefinitionBlock<'Mutation'>) => {
+export const tagMutations = (t: ObjectDefinitionBlock<'Mutation'>) => {
   t.field('createTag', {
     type: 'Tag',
     args: {
@@ -34,7 +34,11 @@ export const createTag = (t: ObjectDefinitionBlock<'Mutation'>) => {
 
 export const tagPrismaMutations = [];
 
-export const tagPrismaQueries = ['tag', 'tags', 'tagsConnection'];
+export const tagPrismaQueries = selectPrisma<'Query'>([
+  'tag',
+  'tags',
+  'tagsConnection',
+]);
 
 export const tagMutationPermissions = {
   createTag: isAuthenticated,

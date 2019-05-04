@@ -14,10 +14,11 @@
     "generate": "prisma generate",
     "test": "echo \"No tests specified yet.\"",
     "production": "prisma deploy --env-file .env.prod",
-    "lint": "tslint -c tslint.json \"src/**/*.ts\" -e \"src/generated/**/*.ts\" -t verbose"
+    "lint": "tslint -c tslint.json \"src/**/*.ts\" -e \"src/generated/**/*.ts\" -t verbose -p tsconfig.json"
   },
   "dependencies": {
     "bcrypt": "3.0.6",
+    "dotenv": "7.0.0",
     "graphql": "14.2.1",
     "graphql-shield": "5.3.4",
     "graphql-yoga": "1.17.4",
@@ -25,14 +26,17 @@
     "nexus": "0.11.7",
     "nexus-prisma": "0.3.7",
     "prisma-client-lib": "1.30.2",
+    "sanitize-html": "1.20.1",
     "slug": "1.1.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.24",
     "@types/bcrypt": "3.0.0",
+    "@types/dotenv": "6.1.1",
     "@types/graphql": "14.2.0",
     "@types/jsonwebtoken": "8.3.2",
     "@types/node": "11.13.8",
+    "@types/sanitize-html": "1.18.3",
     "@types/slug": "0.9.1",
     "@types/ws": "6.0.1",
     "prisma": "1.30.2",

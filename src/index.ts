@@ -1,3 +1,4 @@
+import './env';
 import { GraphQLServer } from 'graphql-yoga';
 import { makePrismaSchema } from 'nexus-prisma';
 import * as path from 'path';
