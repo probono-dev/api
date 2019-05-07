@@ -1,0 +1,5 @@
+exclude: 
+  - master
+  - development
+  - staging
+  - keep-*
