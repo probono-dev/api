@@ -4,5 +4,5 @@ mergeable:
     validate:
       - do: dependent
         changed:
-          file: 'package.json'
-          files: ['package-lock.json', 'yarn.lock']
+          files: ['package.json', 'yarn.lock']
+          message: When updating `package.json` please also add an update to the `yarn.lock` file.
