@@ -4973,10 +4973,10 @@ ts-invariant@^0.3.2:
   dependencies:
     tslib "^1.9.3"
 
-ts-node-dev@1.0.0-pre.36:
-  version "1.0.0-pre.36"
-  resolved "https://registry.yarnpkg.com/ts-node-dev/-/ts-node-dev-1.0.0-pre.36.tgz#b9008ee24df9344379240645a19322e1a67611d3"
-  integrity sha512-/n977iSBqfigAp77caj/TIcuitJ0Ol/Mq0Tuar9tpnoiKgd/7drKDPOuJ4BUtoAPv9aeGY+s0SPXkO+nhL3v4w==
+ts-node-dev@1.0.0-pre.37:
+  version "1.0.0-pre.37"
+  resolved "https://registry.yarnpkg.com/ts-node-dev/-/ts-node-dev-1.0.0-pre.37.tgz#726e929298dd30d7353b470736deaa702a78fb1f"
+  integrity sha512-4xqOeutuwJCsA+cmRoHZqjavySZ8WD/btBBZwXlBQ8PJVkg6YuGzRb8/qeICusQ1bPVL4Myl+XZjZqcIx2WuGw==
   dependencies:
     dateformat "~1.0.4-1.2.3"
     dynamic-dedupe "^0.3.0"
