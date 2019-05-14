@@ -1,4 +1,7 @@
-import { RichText as RichTextType } from '../generated/prisma-client';
+import {
+  RichText as RichTextType,
+  RichTextUpdateOneInput,
+} from '../generated/prisma-client';
 import { prismaObjectType } from 'nexus-prisma';
 import * as sanitizeHtml from 'sanitize-html';
 
@@ -25,3 +28,13 @@ export const RichText = prismaObjectType({
     t.prismaFields(['*']);
   },
 });
+
+export const updateRichText: (
+  text?: string | null,
+) => RichTextUpdateOneInput | undefined = text => {
+  return text
+    ? {
+        update: createRichText(text),
+      }
+    : undefined;
+};

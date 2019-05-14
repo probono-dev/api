@@ -1,6 +1,5 @@
 import { prismaObjectType } from 'nexus-prisma';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
-import * as slug from 'slug';
 import { isProjectOwner } from '../rules/project';
 import { isAuthenticated } from '../rules/user';
 import { Context } from '../types';
@@ -10,8 +9,9 @@ import {
   selectPrisma,
   optionalStringArg,
   requiredIdArg,
+  createSlug,
 } from '../utils';
-import { createRichText } from './RichText';
+import { createRichText, updateRichText } from './RichText';
 
 export const Project = prismaObjectType({
   name: 'Project',
@@ -44,7 +44,7 @@ export const projectMutations = (t: ObjectDefinitionBlock<'Mutation'>) => {
       const project = await ctx.prisma.createProject({
         name,
         description: { create: createRichText(description) },
-        slug: slug(name),
+        slug: createSlug(name)!,
         owner: { connect: { id } },
         category: { connect: { id: categoryId } },
         imageUrl: '',
@@ -59,26 +59,21 @@ export const projectMutations = (t: ObjectDefinitionBlock<'Mutation'>) => {
       id: requiredIdArg({
         description: 'ID of the **Project** to be updated.',
       }),
-      name: optionalStringArg({ description: 'New name of the project.' }),
+      name: requiredStringArg({ description: 'New name of the project.' }),
       description: optionalStringArg({
         description: 'New Rich Text description of the **Project**',
+        default: '',
       }),
     },
     resolve: async (_, { id, name, description }, ctx: Context) => {
-      const newSlug = name ? slug(name) : undefined;
       const project = await ctx.prisma.updateProject({
         where: {
           id,
         },
         data: {
           name,
-          description: {
-            upsert: {
-              create: createRichText(description),
-              update: createRichText(description),
-            },
-          },
-          slug: newSlug,
+          description: updateRichText(description),
+          slug: createSlug(name),
           imageUrl: '',
         },
       });

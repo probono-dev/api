@@ -1,7 +1,7 @@
 type User {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
   admin: Boolean! @default(value: false)
 
   # Auth related fields
@@ -26,19 +26,23 @@ type User {
 }
 
 type RichText {
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+
   text: String!
   html: String!
 }
 
 type Organisation {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
-  name: String! @unique
   slug: String! @unique
   approved: Boolean! @default(value: false)
 
+  name: String! @unique
   owner: User @relation(name: "OrganisationOwner")
   description: RichText
   website: String
@@ -47,15 +51,15 @@ type Organisation {
 }
 
 type Project {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   published: Boolean! @default(value: false)
   slug: String! @unique
 
   name: String!
-  description: RichText!
+  description: RichText! @relation(link: INLINE)
   imageUrl: String
   owner: User! @relation(name: "OwnedProjects")
   contributors: [User!]! @relation(name: "Contributions")
@@ -65,13 +69,13 @@ type Project {
 }
 
 type Task {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 
   name: String!
   slug: String! @unique
-  description: RichText
+  description: RichText! @relation(link: INLINE)
   project: Project!
   subTasks: [Task!]!
   status: TaskStatus! @default(value: TO_DO)
@@ -86,9 +90,10 @@ enum TaskStatus {
 }
 
 type Category {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+
   approved: Boolean! @default(value: false)
 
   name: String!
@@ -97,7 +102,10 @@ type Category {
 }
 
 type Tag {
-  id: ID! @unique
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+
   name: String! @unique
   projects: [Project!]!
 }

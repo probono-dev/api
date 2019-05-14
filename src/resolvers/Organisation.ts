@@ -1,6 +1,5 @@
 import { prismaObjectType } from 'nexus-prisma';
 import { ObjectDefinitionBlock } from 'nexus/dist/core';
-import * as slug from 'slug';
 import { isAdmin, isAuthenticated } from '../rules/user';
 import { Context } from '../types';
 import {
@@ -8,9 +7,9 @@ import {
   requiredStringArg,
   selectPrisma,
   optionalStringArg,
-  optionalIdArg,
+  createSlug,
 } from '../utils';
-import { createRichText } from './RichText';
+import { createRichText, updateRichText } from './RichText';
 import { isOrganisationOwner } from '../rules/organisation';
 
 export const Organisation = prismaObjectType({
@@ -30,14 +29,17 @@ export const organisationMutations = (t: ObjectDefinitionBlock<'Mutation'>) => {
     type: 'Organisation',
     args: {
       name: requiredStringArg({ description: NAME_DESCRIPTION }),
-      description: requiredStringArg({ description: DESCRIPTION_DESCRIPTION }),
+      description: optionalStringArg({
+        description: DESCRIPTION_DESCRIPTION,
+        default: '',
+      }),
     },
     resolve: async (_, { name, description }, ctx: Context) => {
       return ctx.prisma.createOrganisation({
         name,
-        slug: slug(name, { lower: true }),
+        slug: createSlug(name)!,
         approved: false,
-        description: { create: createRichText(description) },
+        description: { create: createRichText(description || '') },
       });
     },
   });
@@ -50,22 +52,17 @@ export const organisationMutations = (t: ObjectDefinitionBlock<'Mutation'>) => {
       description: optionalStringArg({
         description: DESCRIPTION_DESCRIPTION,
       }),
-      ownerId: optionalIdArg({ description: USERID_DESCRIPTION }),
+      ownerId: requiredIdArg({ description: USERID_DESCRIPTION }),
     },
     resolve: async (_, { name, description, id, ownerId }, ctx: Context) => {
       return ctx.prisma.updateOrganisation({
         where: { id },
         data: {
-          name,
-          slug: slug(name, { lower: true }),
+          name: name || undefined,
+          slug: createSlug(name),
           approved: false,
-          description: {
-            upsert: {
-              create: createRichText(description),
-              update: createRichText(description),
-            },
-          },
-          owner: { connect: { id: ownerId } },
+          description: updateRichText(description),
+          owner: { connect: { id: ownerId! } },
         },
       });
     },

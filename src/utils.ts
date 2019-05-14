@@ -8,6 +8,7 @@ import {
 } from 'nexus/dist/core';
 import { Context } from './types';
 import { AddFieldInput } from 'nexus-prisma/dist/types';
+import * as slug from 'slug';
 
 export const APP_SECRET = 'appsecret321';
 
@@ -18,6 +19,9 @@ export const throwIf = (condition: boolean, message: string) => {
     throw new Error(message);
   }
 };
+
+export const createSlug = (text?: string | null) =>
+  text ? slug(text, { lower: true }) : undefined;
 
 interface Token {
   userId: string;
