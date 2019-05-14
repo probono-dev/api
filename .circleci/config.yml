@@ -3,7 +3,7 @@ version: 2.1
 references:
   container_config: &container_config
     machine: true
-    working_directory: /root/project
+    working_directory: ~/project
 
   workspace_root: &workspace_root
     /tmp/workspace
@@ -86,7 +86,7 @@ jobs:
       - save_cache:
           key: *npm_cache_key
           paths:
-            - /root/project/node_modules
+            - project/node_modules
 
   lint:
     <<: *container_config
