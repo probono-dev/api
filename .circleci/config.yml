@@ -1,117 +1,141 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2.1
+
+references:
+  container_config: &container_config
+    machine: true
+    working_directory: /root/project
+
+  workspace_root: &workspace_root
+    /tmp/workspace
+
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+  
+  restore_repo: &restore_repo
+    restore_cache:
+      keys:
+        - v1-repo-{{ .Branch }}-{{ .Revision }}
+        - v1-repo-{{ .Branch }}
+        - v1-repo
+  
+  npm_cache_key: &npm_cache_key
+    v1-dependency-npm-{{ checksum "package.json" }}
+  npm_backup_cache_key: &npm_backup_cache_key
+    v1-dependency-npm
+
+  restore_node_modules: &restore_node_modules
+    restore_cache:
+      keys:
+        - *npm_cache_key
+        - *npm_backup_cache_key
+  
+  start_prisma_server: &start_prisma_server
+    run:
+      name: Start Prisma server
+      command: |
+        npm run service
+        sleep 20
+        npm run deploy
+  
+  restore_generated_source_files: &restore_generated_source_files
+    run:
+      name: Restore Generated Source Files
+      command: mv /tmp/workspace/src/generated src/generated
+
 workflows:
   version: 2
   test-build-deploy:
     jobs:
-      - setup
+      - checkout_code
+      - install_dependencies:
+          requires:
+            - checkout_code
       - lint:
           requires:
-            - setup
+            - install_dependencies
       - local_deploy:
           requires:
-            - lint
+            - install_dependencies
       - build:
           requires:
             - local_deploy
       - test:
           requires:
             - build
-      # - build:
-      #     requires:
-      #       - test
-      #     filters:
-      #       branches:
-      #         only: master
-      # - deploy:
-      #     requires:
-      #       - build
-      #     filters:
-      #       branches:
-      #         only: master
+
 jobs:
-  setup:
-    machine: true
-    working_directory: ~/project
+  checkout_code:
+    <<: *container_config
     steps:
+      - *restore_repo
       - checkout
+      - save_cache:
+          key: v1-repo-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .
 
-      - run:
-          name: Install Node Version Manager
-          command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-            nvm install v8.12.0
-            nvm alias default v8.12.0
-            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-            echo "[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"" >> $BASH_ENV
-
-  lint:
-    machine: true
-    working_directory: ~/project
-
+  install_dependencies:
+    <<: *container_config
     steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
+      - *restore_repo
+      - *restore_node_modules
       - run:
           name: Install Dependencies
           command: npm install
-
       - save_cache:
+          key: *npm_cache_key
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - /root/project/node_modules
+
+  lint:
+    <<: *container_config
+    steps:
+      - *restore_repo
+      - *restore_node_modules
 
       - run:
           name: Lint Files
           command: npm run lint
 
   local_deploy:
-    machine: true
-    working_directory: ~/project
-
+    <<: *container_config
     steps:
-      - checkout
-
-      - run:
-          name: Start Prisma server
-          command: |
-            npm run service
-            sleep 20
-            npm run deploy
+      - *attach_workspace
+      - *restore_repo
+      - *restore_node_modules
+      - *start_prisma_server
+      - persist-to-workspace:
+          root: *workspace_root
+          paths:
+            - src/generated
 
   build:
-    machine: true
-    working_directory: ~/project
-
+    <<: *container_config
     steps:
-      - checkout
-
+      - *attach_workspace
+      - *restore_repo
+      - *restore_node_modules
+      - *restore_generated_source_files
       - run:
           name: Build Server
           command: npm run build
+      - persist-to-workspace:
+          root: *workspace_root
+          paths:
+            - dist
 
   test:
-    machine: true
-    working_directory: ~/project
-
+    <<: *container_config
     steps:
-      - checkout
-
-      # Paid feature - to be added when possible
-      # - setup_remote_docker: 
-      #    docker_layer_caching: true
-
+      - *attach_workspace
+      - *restore_repo
+      - *restore_node_modules
+      - *start_prisma_server
+      - *restore_generated_source_files
+      - run:
+          name: Restore Server Files
+          command: mv /tmp/workspace/dist dist
       - run:
           name: Start GraphQL Server
           command: npm start
@@ -123,18 +147,5 @@ jobs:
           command: |
             wget --retry-connrefused --waitretry=5 --read-timeout=20 --timeout=15 -t 10 http://localhost:4000
 
-      # run tests!
       - run: npm run test
-  # build:
-  #   docker:
-  #     - image: 
-  # deploy:
-  #   docker:
-  #     - image: buildpack-deps:trusty
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Deploy Master to Heroku
-  #         command: |
-  #           git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
