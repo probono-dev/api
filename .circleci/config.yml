@@ -7,7 +7,19 @@ workflows:
   version: 2
   test-build-deploy:
     jobs:
-      - test
+      - setup
+      - lint:
+          requires:
+            - setup
+      - local_deploy:
+          requires:
+            - lint
+      - build:
+          requires:
+            - local_deploy
+      - test:
+          requires:
+            - build
       # - build:
       #     requires:
       #       - test
@@ -21,16 +33,11 @@ workflows:
       #       branches:
       #         only: master
 jobs:
-  test:
+  setup:
     machine: true
-    working_directory: ~/probono-api
-
+    working_directory: ~/project
     steps:
       - checkout
-
-      # Paid feature - to be added when possible
-      # - setup_remote_docker: 
-      #    docker_layer_caching: true
 
       - run:
           name: Install Node Version Manager
@@ -42,6 +49,13 @@ jobs:
             nvm alias default v8.12.0
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
             echo "[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"" >> $BASH_ENV
+
+  lint:
+    machine: true
+    working_directory: ~/project
+
+    steps:
+      - checkout
 
       - restore_cache:
           keys:
@@ -62,12 +76,41 @@ jobs:
           name: Lint Files
           command: npm run lint
 
+  local_deploy:
+    machine: true
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
       - run:
           name: Start Prisma server
           command: |
             npm run service
             sleep 20
             npm run deploy
+
+  build:
+    machine: true
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build Server
+          command: npm run build
+
+  test:
+    machine: true
+    working_directory: ~/project
+
+    steps:
+      - checkout
+
+      # Paid feature - to be added when possible
+      # - setup_remote_docker: 
+      #    docker_layer_caching: true
 
       - run:
           name: Start GraphQL Server
