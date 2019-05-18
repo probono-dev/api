@@ -126,7 +126,7 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - src/generated
+            - ~/src/generated
 
   build:
     <<: *container_config
@@ -143,7 +143,7 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - dist
+            - ~/dist
 
   test:
     <<: *container_config
@@ -157,7 +157,7 @@ jobs:
       - *restore_generated_source_files
       - run:
           name: Restore Server Files
-          command: mv /tmp/workspace/dist dist
+          command: mv /tmp/workspace/dist ~/dist
       - run:
           name: Start GraphQL Server
           command: npm start
