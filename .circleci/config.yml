@@ -48,6 +48,14 @@ references:
       name: Install Dependencies
       command: npm install
 
+  set_node_version: &set_node_version
+    run:
+      name: Set Node version
+      command: |
+        nvm install v8.12.0
+        nvm alias default v8.12.0
+        echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+        echo "[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"" >> $BASH_ENV
 workflows:
   version: 2
   test-build-deploy:
@@ -107,6 +115,7 @@ jobs:
       - *attach_workspace
       - *restore_repo
       - *restore_node_modules
+      - *set_node_version
       - *npm_install
       - *start_prisma_server
       - persist_to_workspace:
@@ -120,6 +129,7 @@ jobs:
       - *attach_workspace
       - *restore_repo
       - *restore_node_modules
+      - *set_node_version
       - *npm_install
       - *restore_generated_source_files
       - run:
@@ -136,6 +146,7 @@ jobs:
       - *attach_workspace
       - *restore_repo
       - *restore_node_modules
+      - *set_node_version
       - *npm_install
       - *start_prisma_server
       - *restore_generated_source_files
