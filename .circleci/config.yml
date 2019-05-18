@@ -43,6 +43,11 @@ references:
       name: Restore Generated Source Files
       command: mv /tmp/workspace/src/generated src/generated
 
+  npm_install: &npm_install
+    run:
+      name: Install Dependencies
+      command: npm install
+
 workflows:
   version: 2
   test-build-deploy:
@@ -80,9 +85,7 @@ jobs:
     steps:
       - *restore_repo
       - *restore_node_modules
-      - run:
-          name: Install Dependencies
-          command: npm install
+      - *npm_install
       - save_cache:
           key: *npm_cache_key
           paths:
@@ -93,7 +96,7 @@ jobs:
     steps:
       - *restore_repo
       - *restore_node_modules
-
+      - *npm_install
       - run:
           name: Lint Files
           command: npm run lint
@@ -104,6 +107,7 @@ jobs:
       - *attach_workspace
       - *restore_repo
       - *restore_node_modules
+      - *npm_install
       - *start_prisma_server
       - persist_to_workspace:
           root: *workspace_root
@@ -116,6 +120,7 @@ jobs:
       - *attach_workspace
       - *restore_repo
       - *restore_node_modules
+      - *npm_install
       - *restore_generated_source_files
       - run:
           name: Build Server
@@ -131,6 +136,7 @@ jobs:
       - *attach_workspace
       - *restore_repo
       - *restore_node_modules
+      - *npm_install
       - *start_prisma_server
       - *restore_generated_source_files
       - run:
