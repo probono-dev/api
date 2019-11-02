@@ -4572,6 +4572,14 @@ source-map-support@^0.5.1, source-map-support@^0.5.6:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
+source-map-support@^0.5.12:
+  version "0.5.16"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.16.tgz#0ae069e7fe3ba7538c64c98515e35339eac5a042"
+  integrity sha512-efyLRJDr68D9hBBNIPWFjhpFzURh+KJykQwvMyW5UiZzYwoF6l4YMMDIJJEyFWxWCqfyxLzz6tSfUFR+kXXsVQ==
+  dependencies:
+    buffer-from "^1.0.0"
+    source-map "^0.6.0"
+
 source-map-url@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
@@ -5002,10 +5010,10 @@ ts-invariant@^0.3.2:
   dependencies:
     tslib "^1.9.3"
 
-ts-node-dev@1.0.0-pre.39:
-  version "1.0.0-pre.39"
-  resolved "https://registry.yarnpkg.com/ts-node-dev/-/ts-node-dev-1.0.0-pre.39.tgz#17c3f6350c974a16dd9b18b67577b1786b88973d"
-  integrity sha512-yOg9nMAi6U2HcAkhnFuWxfg53XDqpdbeBESo+7DfmlDpQX4RrEzBNV6szOjlm/OH0KiRgG5J0emvg/BS/gQmXQ==
+ts-node-dev@1.0.0-pre.44:
+  version "1.0.0-pre.44"
+  resolved "https://registry.yarnpkg.com/ts-node-dev/-/ts-node-dev-1.0.0-pre.44.tgz#2f4d666088481fb9c4e4f5bc8f15995bd8b06ecb"
+  integrity sha512-M5ZwvB6FU3jtc70i5lFth86/6Qj5XR5nMMBwVxZF4cZhpO7XcbWw6tbNiJo22Zx0KfjEj9py5DANhwLOkPPufw==
   dependencies:
     dateformat "~1.0.4-1.2.3"
     dynamic-dedupe "^0.3.0"
@@ -5015,6 +5023,7 @@ ts-node-dev@1.0.0-pre.39:
     node-notifier "^5.4.0"
     resolve "^1.0.0"
     rimraf "^2.6.1"
+    source-map-support "^0.5.12"
     tree-kill "^1.2.1"
     ts-node "*"
     tsconfig "^7.0.0"
