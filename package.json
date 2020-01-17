@@ -28,7 +28,7 @@
     "nexus": "0.11.7",
     "nexus-prisma": "0.3.7",
     "prisma-client-lib": "1.31.2",
-    "sanitize-html": "1.20.1",
+    "sanitize-html": "1.21.0",
     "slug": "1.1.0"
   },
   "devDependencies": {
