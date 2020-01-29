@@ -41,7 +41,7 @@
     "@types/node": "11.13.9",
     "@types/sanitize-html": "1.18.3",
     "@types/slug": "0.9.1",
-    "@types/ws": "6.0.1",
+    "@types/ws": "7.2.1",
     "prisma": "1.30.2",
     "ts-node-dev": "1.0.0-pre.39",
     "tslint": "5.16.0",
