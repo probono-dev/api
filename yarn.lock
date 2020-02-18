@@ -43,10 +43,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@types/aws-lambda@8.10.25":
-  version "8.10.25"
-  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.25.tgz#58e2ab411ea776ec7834510d5bb6f5d552423fcd"
-  integrity sha512-f2Y+2Ii/AsSuw7Yac6Ymk35Qe0Wk6b2KvZF1o4pieonCfhAZUclAKSHcVDmO3IMSROCDmJ6Q3PErMYDQ9kapDw==
+"@types/aws-lambda@8.10.42":
+  version "8.10.42"
+  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.42.tgz#03a7fbb7f74925816c0697d98275bb78d166722e"
+  integrity sha512-MxZLTiVE+ieUSuL47M0Y7OzdfwLZHY63dvOo756NvyYlG9xxFWFkUIINmDWjCt/2DJfcq3J6+9dVsYt17Le5yA==
 
 "@types/bcrypt@3.0.0":
   version "3.0.0"
