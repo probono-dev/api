@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "bcrypt": "3.0.6",
-    "cross-env": "5.2.0",
+    "cross-env": "7.0.2",
     "dotenv": "7.0.0",
     "graphql": "14.3.0",
     "graphql-middleware": "3.0.2",
