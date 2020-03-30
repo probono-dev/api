@@ -3203,11 +3203,12 @@ nexus-prisma@0.3.7:
   resolved "https://registry.yarnpkg.com/nexus-prisma/-/nexus-prisma-0.3.7.tgz#d2a556616bb6d100c1a0b9daff89fd4394666a29"
   integrity sha512-jkqO0ApnctX8pIzhspsUqaoBEuviWNkCBuz/S9fakC/MqDNKZkLKog519L6BAALmm5YrHts1x2+6tJvCE8MiGQ==
 
-nexus@0.11.7:
-  version "0.11.7"
-  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.11.7.tgz#db580f1d6feb5e590fe395d9cd218c969c46b9ed"
-  integrity sha512-d5iD9jKn8n8tfFerisxYmKlrJmj5omPS49+s1xv2O2q5GiagDH4ySxajg0vsf0EMT2K+OvlCuSxT0xarS1gqKw==
+nexus@0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.12.0.tgz#999d979844b5f8654265dfdce5683b3960f76c49"
+  integrity sha512-oH+z1wb2B4M/t67wSc/yEKYszyo9qXam+bQ05avSReu1LbNYTWLzuVjIwXD/MNOpdNqqAPLWvMhkA5gwaIxhSQ==
   dependencies:
+    iterall "^1.2.2"
     tslib "^1.9.3"
 
 nice-try@^1.0.4:
