@@ -156,10 +156,10 @@
     "@types/domutils" "*"
     "@types/node" "*"
 
-"@types/jsonwebtoken@8.3.2":
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.2.tgz#e3d5245197152346fae7ee87d5541aa5a92d0362"
-  integrity sha512-Mkjljd9DTpkPlrmGfTJvcP4aBU7yO2QmW7wNVhV4/6AEUxYoacqU7FJU/N0yFEHTsIrE4da3rUrjrR5ejicFmA==
+"@types/jsonwebtoken@8.3.9":
+  version "8.3.9"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.9.tgz#48da9a49997e4eb046733e6878f583d7448f0594"
+  integrity sha512-00rI8GbOKuRtoYxltFSRTVUXCRLbuYwln2/nUMPtFU9JGS7if+nnmLjeoFGmqsNCmblPLAaeQ/zMLVsHr6T5bg==
   dependencies:
     "@types/node" "*"
 
